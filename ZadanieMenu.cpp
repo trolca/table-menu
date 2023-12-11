@@ -38,7 +38,7 @@ int main()
 
     string trash = "";
 
-    cout << "Podaj wielkosc tablicy (tablica jest int):";
+    cout << "Podaj wielkosc tablicy (tablica jest int): ";
     cin >> size;
     int* tab = new int[size];
     
@@ -70,7 +70,7 @@ int main()
         case 1:
         {
             int newNum;
-            cout << "Write new number: ";
+            cout << "Napisz liczbe do dodania: ";
             cin >> newNum;
 
             size++;
