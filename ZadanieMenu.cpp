@@ -1,12 +1,14 @@
 #include <iostream>
+#include <string>
 #include <time.h>
 #include <stdlib.h>
+#include <fstream>
 
 
 using namespace std;
 
 int rand(int end) {
-   
+
     return rand() % end;
 }
 
@@ -22,18 +24,19 @@ void copyArray(int fromArray[], int toArray[], int start, int end) {
 
 void printArray(int array[], int size) {
 
-    
+    string sa = "";
+
     for (int i = 0; i < size; i++) {
-        cout << array[i] << ", ";
+       cout << array[i] << ",";
     }
-    
+
     cout << endl;
 }
 
 int main()
 {
     srand(time(NULL));
-    
+
     int size = 0;
 
     string trash = "";
@@ -41,7 +44,7 @@ int main()
     cout << "Podaj wielkosc tablicy (tablica jest int): ";
     cin >> size;
     int* tab = new int[size];
-    
+
     for (int i = 0; i < size; i++) {
         tab[i] = rand(100);
     }
@@ -57,7 +60,9 @@ int main()
         cout << " [2] Wstaw element" << endl;
         cout << " [3] Usun element" << endl;
         cout << " [4] Wyswietl tablice" << endl;
-        cout << " [5] Wyjscie" << endl;
+        cout << " [5] Zapisz do pliku" << endl;
+        cout << " [6] Odczyt z pliku" << endl;
+        cout << " [0] Wyjscie" << endl;
         cout << "---------------------------" << endl;
         cout << "Podaj opcje: ";
         cin >> choice;
@@ -66,6 +71,12 @@ int main()
 
         switch (choice)
         {
+
+        case 0:
+            {
+             exit = true;
+             break;
+            }
 
         case 1:
         {
@@ -113,7 +124,7 @@ int main()
               break;
 
         case 3: {
-               
+
             int index;
 
             do {
@@ -144,23 +155,85 @@ int main()
             printArray(tab, size);
 
             cin >> trash;
-            
-        }
-            break;
 
-        case 5: {
-            exit = true;
-        
         }
             break;
 
 
+        case 5:
+            {
 
-      
+            system("cls");
+            fstream plik;
+
+            string pathString;
+
+            cout << "Napisz sciezke pliku: ";
+            cin>>pathString;
+
+            const char* path = pathString.c_str();
+
+
+            plik.open(path, ios::out | ios::app);
+
+            if(!plik.is_open()){
+                cout << "Plik nie istnieje!" << endl;
+                cin>>trash;
+                plik.close();
+                break;
+            }
+
+            for(int i=0; i < size; i++){
+                plik << tab[i] << endl;
+            }
+
+            plik.close();
+
+            break;
+
+            }
+
+        case 6:
+            {
+            system("cls");
+            fstream plik;
+
+            string pathString;
+
+            cout << "Napisz sciezke pliku: ";
+            cin>>pathString;
+
+            const char* path = pathString.c_str();
+
+            plik.open(path, ios::in);
+
+            if(!plik.is_open()){
+                cout << "Plik nie istnieje!" << endl;
+                cin>>trash;
+                plik.close();
+                break;
+            }
+            string outputTab;
+
+            int i = 0;
+            while(!plik.eof()){
+
+                getline(plik, outputTab);
+                tab[i] = atoi(outputTab.c_str());
+                i++;
+            }
+
+            cin >> trash;
+
+            plik.close();
+
+            break;
+
+            }
+
         }
+
 
     }
-
-
 }
 
